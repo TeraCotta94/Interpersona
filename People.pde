@@ -12,6 +12,8 @@ class People{
   double minDist = 478.5;           // if a person moves less than this attribute, the person is assumed to stay still  228000
   int counter = 0;             // counter for the time a person stays in one place
   
+  ArrayList<Double> distances = new ArrayList<Double>();
+  
   public People(int[] pColor, int x, int y, int name){
     this.pColor = pColor;
     oldX = x;
@@ -24,7 +26,27 @@ class People{
     strokeWeight(1.2);
     fill(pColor[0], pColor[1], pColor[2]);
     
-    double dist = Math.sqrt(Math.pow(posX-oldX,2)+Math.pow(posY-oldY,2));
+    double currentDistance = Math.sqrt(Math.pow(posX-oldX,2)+Math.pow(posY-oldY,2));
+    distances.add(currentDistance/30);
+    if(distances.size()>30){
+      distances.remove(0);
+    }
+    
+    double avgDistance = 0.0;
+    for(double dist : distances){
+      avgDistance += dist;
+    }
+    
+    if(name ==2){
+      
+    println(avgDistance);
+    }
+    
+    if(avgDistance<464 && distances.size()==30){
+      //println(avgDistance);
+      ellipse(posX, posY-wallHeight, coneSize, coneSize);
+    }
+    /*
     if(dist<minDist){
       counter ++;
       
@@ -38,6 +60,7 @@ class People{
       counter = 0;
       println("reset " + name + " " + dist);
     }
+    */
     
     line(oldX, oldY, posX, posY-wallHeight);
     noStroke();  
@@ -49,5 +72,11 @@ class People{
     oldY = posY-wallHeight;
   }
   
+  public int getX(){
+    return oldX;
+  }
   
+  public int getY(){
+    return oldY;
+  }
 }

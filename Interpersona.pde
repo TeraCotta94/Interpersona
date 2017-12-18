@@ -1,26 +1,27 @@
 // Version 4.1
 
 PFont font;
-int scaleFactor = 4;
+int scaleFactor = 1;
 int windowWidth = 3030/scaleFactor;   // for real Deep Space this should be 3030
 int windowHeight = 3712/scaleFactor;  // for real Deep Space this should be 3712
 int wallHeight = 1914/scaleFactor;    // for real Deep Space this should be 1914 (Floor is 1798)
 
 ArrayList<People> people = new ArrayList<People>();    // list of people in the room
-int counter = 0;    // counter for the fade out
+int counter = 0;      // counter for the fade out
+int collDist = 50;    // distance for collision calculation
 
 int colorCounter = 0;
-int[][] colors = new int[][]{ {0, 190, 255},     // light blue
-                              {150, 0, 255},     // purple
-                              {255, 255, 0},     // yellow
-                              {150, 255, 0},     // lime
-                              {255, 60, 0},      // red
-                              {0, 255, 180},     // turquois
-                              {255, 180, 0},     // orange                              
-                              {0, 50, 255},      // blue
-                              {240, 0, 220},     // pink
-                              {0, 180, 0}};      // green
-                              
+int[][] colors = new int[][]{ {0, 190, 255}, // light blue
+  {150, 0, 255}, // purple
+  {255, 255, 0}, // yellow
+  {150, 255, 0}, // lime
+  {255, 60, 0}, // red
+  {0, 255, 180}, // turquois
+  {255, 180, 0}, // orange                              
+  {0, 50, 255}, // blue
+  {240, 0, 220}, // pink
+  {0, 180, 0}};      // green
+
 
 void settings()
 {
@@ -47,7 +48,7 @@ void setup()
 
 void draw()
 {
-  
+
   // redraw wall projection to make the lines fade out
   counter++;
   if (counter>120) {
@@ -68,7 +69,7 @@ void draw()
   // redraw floor projection
   rect(0, wallHeight, windowWidth, windowHeight);
 
-  
+
   // calculate and draw behaviour of people currently in the room
   for (int trackID=0; trackID<GetNumTracks (); trackID++) 
   {      
@@ -80,6 +81,16 @@ void draw()
     // otherwise the person is updated
     else {
       people.get(GetCursorID(trackID)).update(GetPathPointX(trackID, GetNumPathPoints(trackID)-1), GetPathPointY(trackID, GetNumPathPoints(trackID)-1));
+      
+      //it is checked if it collides with any other previously checked trackID
+      //if (trackID!=0) {
+        for (int i = 0; i<trackID; i++) {
+          double dist = Math.abs(people.get(GetCursorID(trackID)).getX() - people.get(GetCursorID(i)).getX()) + Math.abs(people.get(GetCursorID(trackID)).getY() - people.get(GetCursorID(i)).getY());
+          if (dist<collDist) {         
+            //println(GetCursorID(trackID) + " and " + GetCursorID(i) + " overlap");
+          }
+        }
+      //}
     }
   }
 }
