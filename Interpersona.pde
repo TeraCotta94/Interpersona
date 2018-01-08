@@ -1,7 +1,8 @@
 // Version 4.1
+import processing.sound.*;
 
 PFont font;
-int scaleFactor = 1;
+int scaleFactor = 15;
 int windowWidth = 3030/scaleFactor;   // for real Deep Space this should be 3030
 int windowHeight = 3712/scaleFactor;  // for real Deep Space this should be 3712
 int wallHeight = 1914/scaleFactor;    // for real Deep Space this should be 1914 (Floor is 1798)
@@ -21,7 +22,8 @@ int[][] colors = new int[][]{ {0, 190, 255, 255}, // light blue
   {240, 0, 220, 255}, // pink
   {0, 180, 0, 255}};      // green
 
-PShape[] images;      
+PShape[] images;  
+SoundFile sound;
 
 void settings()
 {
@@ -53,6 +55,9 @@ void setup()
     loadShape("Symbole/Symbol-07.svg"), 
     loadShape("Symbole/Symbol-08.svg"), 
     loadShape("Symbole/Symbol-09.svg")};
+    
+    sound = new SoundFile(this, "Forest_Atmo.aif");
+    sound.play();
 }
 
 
