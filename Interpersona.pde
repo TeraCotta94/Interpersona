@@ -57,7 +57,8 @@ void setup()
     loadShape("Symbole/Symbol-09.svg")};
     
     sound = new SoundFile(this, "Forest_Atmo.aif");
-    sound.play();
+    sound.loop();
+    sound.amp(0.1);
 }
 
 
