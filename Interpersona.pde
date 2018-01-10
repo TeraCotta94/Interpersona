@@ -1,15 +1,14 @@
-// Version 4.1
-import processing.sound.*;
+import ddf.minim.*;
 
 PFont font;
-int scaleFactor = 15;
+int scaleFactor = 4;
 int windowWidth = 3030/scaleFactor;   // for real Deep Space this should be 3030
 int windowHeight = 3712/scaleFactor;  // for real Deep Space this should be 3712
 int wallHeight = 1914/scaleFactor;    // for real Deep Space this should be 1914 (Floor is 1798)
 
-ArrayList<People> people = new ArrayList<People>();    // list of people in the room
+HashMap<Integer, People> people = new HashMap<Integer, People>();
 int counter = 0;      // counter for the fade out
-int collDist = 50;    // distance for collision calculation
+int collDist = 200/scaleFactor;    // distance for collision calculation
 
 int colorCounter = 0;
 int[][] colors = new int[][]{ {0, 190, 255, 255}, // light blue
@@ -23,7 +22,8 @@ int[][] colors = new int[][]{ {0, 190, 255, 255}, // light blue
   {0, 180, 0, 255}};      // green
 
 PShape[] images;  
-SoundFile sound;
+Minim sound;
+AudioPlayer playerAmbient;
 
 void settings()
 {
@@ -46,19 +46,20 @@ void setup()
   fill(255);
   rect(0, 0, windowWidth, wallHeight);
 
-  images = new PShape[]{loadShape("Symbole/Symbol-01.svg"), 
-    loadShape("Symbole/Symbol-02.svg"), 
-    loadShape("Symbole/Symbol-03.svg"), 
-    loadShape("Symbole/Symbol-04.svg"), 
-    loadShape("Symbole/Symbol-05.svg"), 
-    loadShape("Symbole/Symbol-06.svg"), 
-    loadShape("Symbole/Symbol-07.svg"), 
-    loadShape("Symbole/Symbol-08.svg"), 
-    loadShape("Symbole/Symbol-09.svg")};
-    
-    sound = new SoundFile(this, "Forest_Atmo.aif");
-    sound.loop();
-    sound.amp(0.1);
+  images = new PShape[]{loadShape("Symbole/Symbole-01.svg"), 
+    loadShape("Symbole/Symbole-02.svg"), 
+    loadShape("Symbole/Symbole-03.svg"), 
+    loadShape("Symbole/Symbole-04.svg"), 
+    loadShape("Symbole/Symbole-05.svg"), 
+    loadShape("Symbole/Symbole-06.svg"), 
+    loadShape("Symbole/Symbole-07.svg"), 
+    loadShape("Symbole/Symbole-08.svg"), 
+    loadShape("Symbole/Symbole-09.svg")};
+
+  sound = new Minim(this);
+  playerAmbient = sound.loadFile("Forest_Ambience.aif");
+  playerAmbient.loop();
+  playerAmbient.setGain(-25);
 }
 
 
@@ -75,7 +76,6 @@ void draw()
     rect(0, 0, windowWidth, wallHeight);
   }
 
-
   // stuff for the FPS counter
   fill(255);
   rect(0, 0, windowWidth, 24);
@@ -85,21 +85,12 @@ void draw()
   // redraw floor projection
   rect(0, wallHeight, windowWidth, windowHeight);
 
-/*
-  while (people.size() <= GetCursorID(GetNumTracks()-1)) {
-    print(people.size());
-    int current = people.size();
-    people.add(new People(colors[colorCounter++%9], images[colorCounter++%9], GetPathPointX(current, GetNumPathPoints(current)-1), GetPathPointY(current, GetNumPathPoints(current)-1), GetCursorID(current)));
-  }*/
-
-
   // calculate and draw behaviour of people currently in the room
   for (int trackID=0; trackID<GetNumTracks (); trackID++) 
   {      
     // if a new person enters the room a new entity is added to People
-    if (people.size() <= GetCursorID(trackID)) {
-      print(people.size());
-      people.add(new People(colors[colorCounter++%9], images[colorCounter++%9], GetPathPointX(trackID, GetNumPathPoints(trackID)-1), GetPathPointY(trackID, GetNumPathPoints(trackID)-1), GetCursorID(trackID)));
+    if(people.get(GetCursorID(trackID))== null){
+      people.put(GetCursorID(trackID),new People(colors[colorCounter++%9], images[colorCounter++%9], GetPathPointX(trackID, GetNumPathPoints(trackID)-1), GetPathPointY(trackID, GetNumPathPoints(trackID)-1), GetCursorID(trackID), sound));
     } 
 
     // otherwise the person is updated
@@ -116,8 +107,11 @@ void draw()
 
         pCurrent.changeColor(cTemp);
         pTemp.changeColor(cCurrent);
-        //println(GetCursorID(trackID) + " and " + GetCursorID(i) + " overlap");
+        
+        pCurrent.interaction = true;
+        pTemp.interaction = true;
       }
     }
+    
   }
 }
