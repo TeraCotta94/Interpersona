@@ -1,7 +1,7 @@
 import ddf.minim.*;
 
 PFont font;
-int scaleFactor = 4;
+int scaleFactor = 1;
 int windowWidth = 3030/scaleFactor;   // for real Deep Space this should be 3030
 int windowHeight = 3712/scaleFactor;  // for real Deep Space this should be 3712
 int wallHeight = 1914/scaleFactor;    // for real Deep Space this should be 1914 (Floor is 1798)
@@ -79,10 +79,12 @@ void draw()
   }
 
   // stuff for the FPS counter
+  /*
   fill(255);
   rect(0, 0, windowWidth, 24);
   fill(0);
   text((int)frameRate + " FPS", width / 2, 10);
+  */
 
   // redraw floor projection
   rect(0, wallHeight, windowWidth, windowHeight);

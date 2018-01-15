@@ -1,5 +1,5 @@
 class People {
-  int scaleFactor = 4;
+  int scaleFactor = 1;
   int wallHeight = 1914/scaleFactor;     // wallHeight to differenciate between the floor and wall projection
 
   //attributes of the person
