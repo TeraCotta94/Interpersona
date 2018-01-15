@@ -82,9 +82,9 @@ class People {
   }
 
   public void changeColor(int[] otherColor) {
-    pColor[0] = (int)(pColor[0]*0.999 + otherColor[0]*0.001);
-    pColor[1] = (int)(pColor[1]*0.999 + otherColor[1]*0.001);
-    pColor[2] = (int)(pColor[2]*0.999 + otherColor[2]*0.001);
+    pColor[0] = (int)(pColor[0]*0.9999 + otherColor[0]*0.0001);
+    pColor[1] = (int)(pColor[1]*0.9999 + otherColor[1]*0.0001);
+    pColor[2] = (int)(pColor[2]*0.9999 + otherColor[2]*0.0001);
 
     interactionCounter++;
   }

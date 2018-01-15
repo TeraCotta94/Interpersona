@@ -89,29 +89,29 @@ void draw()
   for (int trackID=0; trackID<GetNumTracks (); trackID++) 
   {      
     // if a new person enters the room a new entity is added to People
-    if(people.get(GetCursorID(trackID))== null){
-      people.put(GetCursorID(trackID),new People(colors[colorCounter++%9], images[colorCounter++%9], GetPathPointX(trackID, GetNumPathPoints(trackID)-1), GetPathPointY(trackID, GetNumPathPoints(trackID)-1), GetCursorID(trackID), sound));
-    } 
+    if (people.get(GetCursorID(trackID))== null) {
+      people.put(GetCursorID(trackID), new People(colors[colorCounter++%9], images[colorCounter++%9], GetPathPointX(trackID, GetNumPathPoints(trackID)-1), GetPathPointY(trackID, GetNumPathPoints(trackID)-1), GetCursorID(trackID), sound));
+    } else { 
 
-    // otherwise the person is updated
-    People pCurrent = people.get(GetCursorID(trackID));
-    pCurrent.update(GetPathPointX(trackID, GetNumPathPoints(trackID)-1), GetPathPointY(trackID, GetNumPathPoints(trackID)-1));
+      // otherwise the person is updated
+      People pCurrent = people.get(GetCursorID(trackID));
+      pCurrent.update(GetPathPointX(trackID, GetNumPathPoints(trackID)-1), GetPathPointY(trackID, GetNumPathPoints(trackID)-1));
 
-    //it is checked if it collides with any other previously checked trackID
-    for (int i = 0; i<trackID; i++) {
-      People pTemp = people.get(GetCursorID(i));
-      double dist = Math.abs(pCurrent.getX() - pTemp.getX()) + Math.abs(pCurrent.getY() - pTemp.getY());
-      if (dist<collDist) {  
-        int[] cCurrent = pCurrent.getColor();
-        int[] cTemp = pTemp.getColor();
+      //it is checked if it collides with any other previously checked trackID
+      for (int i = 0; i<trackID; i++) {
+        People pTemp = people.get(GetCursorID(i));
+        double dist = Math.abs(pCurrent.getX() - pTemp.getX()) + Math.abs(pCurrent.getY() - pTemp.getY());
+        if (dist<collDist) {  
+          int[] cCurrent = pCurrent.getColor();
+          int[] cTemp = pTemp.getColor();
 
-        pCurrent.changeColor(cTemp);
-        pTemp.changeColor(cCurrent);
-        
-        pCurrent.interaction = true;
-        pTemp.interaction = true;
+          pCurrent.changeColor(cTemp);
+          pTemp.changeColor(cCurrent);
+
+          pCurrent.interaction = true;
+          pTemp.interaction = true;
+        }
       }
     }
-    
   }
 }
