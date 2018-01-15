@@ -27,12 +27,14 @@ AudioPlayer playerAmbient;
 
 void settings()
 {
-  size(windowWidth, windowHeight);
+  //size(windowWidth, windowHeight);
+  fullScreen(P2D, SPAN);
 }
 
 
 void setup()
 {
+  noCursor();
   noStroke();
   fill(0);
 

@@ -63,7 +63,7 @@ class People {
     fill(pColor[0], pColor[1], pColor[2], pColor[3]);
     ellipse(posX, posY, coneSize, coneSize);
     fill(0);
-    text(name, posX, posY);
+    //text(name, posX, posY);
 
     oldX = posX;
     oldY =  posY-wallHeight;
